@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавить новую идею{% endblock %}
+
+{% block content %}
+<h2>Добавить новую идею</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Сохранить</button>
+</form>
+{% endblock %}

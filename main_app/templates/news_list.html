@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Экологические новости{% endblock %}
+
+{% block content %}
+<h2>Экологические новости</h2>
+
+<ul>
+    {% for news in page_obj %}
+        <li>
+            <a href="{% url 'news_detail' news.pk %}">{{ news.title }}</a>
+            <p>{{ news.published_at|date:"d.m.Y" }}</p>
+        </li>
+    {% empty %}
+        <li>Новостей пока нет.</li>
+    {% endfor %}
+</ul>
+
+<div class="pagination" style="text-align: center; margin-top: 1rem;">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn">Предыдущая</a>
+    {% endif %}
+
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn">Следующая</a>
+    {% endif %}
+</div>
+{% endblock %}

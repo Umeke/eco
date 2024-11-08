@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ news_item.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ news_item.title }}</h2>
+<p>Дата публикации: {{ news_item.published_at|date:"d.m.Y H:i" }}</p>
+<p>{{ news_item.content }}</p>
+{% endblock %}

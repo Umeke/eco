@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ idea.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ idea.title }}</h2>
+<p>Категория: {{ idea.category }}</p>
+<p>Автор: {{ idea.author.username }} | Дата: {{ idea.created_at|date:"d.m.Y H:i" }}</p>
+<p>{{ idea.description }}</p>
+
+<p>Лайктар саны: {{ idea.total_likes }}</p>
+
+{% if user.is_authenticated %}
+    <form action="{% url 'like_idea' idea.id %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        {% if user in idea.likes.all %}
+            <button type="submit" class="btn">Лайкты алып тастау</button>
+        {% else %}
+            <button type="submit" class="btn">Лайк</button>
+        {% endif %}
+    </form>
+{% else %}
+    <p>Лайк қою үшін <a href="{% url 'login' %}">жүйеге кіріңіз</a>.</p>
+{% endif %}
+
+<h3>Комментарии</h3>
+<ul>
+    {% for comment in comments %}
+        <li>
+            <p><strong>{{ comment.author.username }}</strong> | {{ comment.created_at|date:"d.m.Y H:i" }}</p>
+            <p>{{ comment.content }}</p>
+        </li>
+    {% empty %}
+        <li>Комментариев пока нет.</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <h3>Оставить комментарий</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit" class="btn">Отправить</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}">Войдите</a>, чтобы оставить комментарий.</p>
+{% endif %}
+{% endblock %}

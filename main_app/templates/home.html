@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<h2>Добро пожаловать на экологический портал!</h2>
+<p>Здесь вы можете узнать о текущих экологических проблемах Казахстана и поделиться своими идеями.</p>
+
+<h3>Последние новости</h3>
+<ul>
+    {% for news in news_list %}
+        <li>
+            <a href="{% url 'news_detail' news.pk %}">{{ news.title }}</a> - {{ news.published_at|date:"d.m.Y" }}
+        </li>
+    {% empty %}
+        <li>Новостей пока нет.</li>
+    {% endfor %}
+</ul>
+
+<h3>Последние идеи</h3>
+<ul>
+    {% for idea in latest_ideas %}
+        <li>
+            <a href="{% url 'idea_detail' idea.pk %}">{{ idea.title }}</a> - от {{ idea.author.username }}
+        </li>
+    {% empty %}
+        <li>Идей пока нет.</li>
+    {% endfor %}
+</ul>
+
+
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Идеи и предложения{% endblock %}
+
+{% block content %}
+<h2>Идеи и предложения</h2>
+
+<a href="{% url 'idea_create' %}" class="btn">Добавить новую идею</a>
+
+<form method="get" action="{% url 'search_ideas' %}" style="margin-bottom: 1rem;">
+    <input type="text" name="q" placeholder="Поиск..." value="{{ request.GET.q }}" style="padding: 0.5rem; width: calc(100% - 2rem); border: 1px solid #ccc; border-radius: 4px;">
+    <button type="submit" class="btn" style="margin-top: 0.5rem;">Поиск</button>
+</form>
+
+<ul>
+    {% for idea in page_obj %}
+        <li>
+            <a href="{% url 'idea_detail' idea.pk %}">{{ idea.title }}</a>
+            <p>Категория: {{ idea.category }}</p>
+            <p>Автор: {{ idea.author.username }} | Дата: {{ idea.created_at|date:"d.m.Y H:i" }}</p>
+        </li>
+    {% empty %}
+        <li>Идей не найдено.</li>
+    {% endfor %}
+</ul>
+
+<div class="pagination" style="text-align: center; margin-top: 1rem;">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn">Предыдущая</a>
+    {% endif %}
+
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn">Следующая</a>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Экологический портал{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            margin: 0 1rem;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #dff0d8;
+        }
+        main {
+            padding: 2rem;
+            background-color: #fff;
+            margin: 2rem auto;
+            max-width: 1000px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #4CAF50;
+            color: white;
+            margin-top: 2rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        ul {
+            padding-left: 1.5rem;
+        }
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="username">
+            {% if user.is_authenticated %}
+                Сәлем, {{ user.username }}!
+            {% else %}
+                <a href="{% url 'login' %}">Кіру</a> | <a href="{% url 'signup' %}">Тіркелу</a>
+            {% endif %}
+        </div>
+        <h1><a href="{% url 'home' %}" style="color: white; text-decoration: none;">Экологический портал для школьников</a></h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Главная</a></li>
+<li><a href="{% url 'idea_list' %}">Идеи и предложения</a></li>
+<li><a href="{% url 'news_list' %}">Экологические новости</a></li>
+
+{% if user.is_authenticated %}
+    <li>
+        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background: none; border: none; color: inherit; cursor: pointer;">Выйти</button>
+        </form>
+    </li>
+{% else %}
+    <li><a href="{% url 'login' %}">Войти</a></li>
+    <li><a href="{% url 'signup' %}">Регистрация</a></li>
+{% endif %}
+
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Экологический портал. Все права защищены.</p>
+    </footer>
+</body>
+</html>
